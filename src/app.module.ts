@@ -9,6 +9,7 @@ import { TenantModule } from './core/tenant/tenant.module';
 import { UsersModule } from './modules/users/users.module';
 import { SessionsModule } from './modules/sessions/sessions.module';
 import { RedisModule } from './infra/redis/redis.module';
+import { RealtimeModule } from './modules/realtime/realtime.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { RedisModule } from './infra/redis/redis.module';
     TenantModule,
     UsersModule,
     SessionsModule,
+    RealtimeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

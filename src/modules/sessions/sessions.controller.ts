@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
 import { SessionsService } from './sessions.service';
+import { CreateSessionDto } from './dto/create-session.dto';
+import { UpdateSessionDto } from './dto/update-session.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { TenantGuard } from '../../common/guards/tenant.guard';
 
@@ -14,8 +16,8 @@ export class SessionsController {
   @Post()
   @ApiOperation({ summary: 'Create a new session' })
   @ApiResponse({ status: 201, description: 'Session created successfully' })
-  async createSession(@Body() body: { userId: string; data: Record<string, any> }) {
-    const sessionId = await this.sessionsService.createSession(body.userId, body.data);
+  async createSession(@Body() dto: CreateSessionDto) {
+    const sessionId = await this.sessionsService.createSession(dto.userId, dto.data);
     return { sessionId };
   }
 
@@ -36,8 +38,8 @@ export class SessionsController {
   @Put(':userId')
   @ApiOperation({ summary: 'Update session' })
   @ApiResponse({ status: 200, description: 'Session updated successfully' })
-  async updateSession(@Param('userId') userId: string, @Body() body: { data: Record<string, any> }) {
-    await this.sessionsService.updateSession(userId, body.data);
+  async updateSession(@Param('userId') userId: string, @Body() dto: UpdateSessionDto) {
+    await this.sessionsService.updateSession(userId, dto.data);
     return { success: true };
   }
 
