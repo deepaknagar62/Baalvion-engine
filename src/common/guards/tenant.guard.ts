@@ -1,10 +1,10 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { TenantContext } from '../../core/tenant/tenant-context';
 
 @Injectable()
 export class TenantGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const tenantId = request['x-tenant-id'] || request.headers['x-tenant-id'] || request.query['tenantId'] || request.body?.tenantId;
+  canActivate(_context: ExecutionContext): boolean {
+    const tenantId = TenantContext.getStore();
 
     if (!tenantId) {
       throw new UnauthorizedException('No tenant context found. Ensure tenant middleware is applied.');
