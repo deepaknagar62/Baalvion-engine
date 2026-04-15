@@ -15,6 +15,7 @@ import { RealtimeModule } from './modules/realtime/realtime.module';
 import { EventsModule } from './modules/events/events.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { MockModule } from './modules/mock/mock.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     EventsModule,
     NotificationsModule,
     DashboardModule,
+    MockModule
   ],
   controllers: [AppController],
   providers: [AppService],

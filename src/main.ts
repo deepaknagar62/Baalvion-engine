@@ -48,6 +48,7 @@ async function bootstrap() {
     .addTag('Users', 'User management endpoints')
     .addTag('Sessions', 'Session tracking endpoints')
     .addTag('Dashboard', 'Dashboard analytics and metrics endpoints')
+    .addTag('Mock Generator', 'Mock event generation and simulation endpoints')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
