@@ -37,9 +37,9 @@ async function bootstrap() {
     .addApiKey(
       {
         type: 'apiKey',
-        name: 'X-Tenant-ID',
+        name: 'x-tenant-domain',
         in: 'header',
-        description: 'Tenant ID for multi-tenancy',
+        description: 'Tenant domain for multi-tenancy (e.g. localhost)',
       },
       'tenant-id',
     )

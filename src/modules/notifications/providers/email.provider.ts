@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as sgMail from '@sendgrid/mail';
+import sgMail from '@sendgrid/mail';
 
 @Injectable()
 export class EmailProvider {
@@ -10,7 +10,7 @@ export class EmailProvider {
   constructor(private readonly configService: ConfigService) {
     const apiKey = this.configService.get<string>('SENDGRID_API_KEY');
     
-    if (apiKey && apiKey !== 'SG.your-key-here' && apiKey !== '') {
+    if (apiKey && apiKey !== '') {
       sgMail.setApiKey(apiKey);
       this.isConfigured = true;
       this.logger.log('SendGrid email provider configured');

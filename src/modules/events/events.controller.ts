@@ -7,7 +7,7 @@ import { TenantGuard } from '../../common/guards/tenant.guard';
 import { NexusEventType } from '../../common/interfaces/event.interface';
 
 @ApiTags('Events')
-@ApiBearerAuth()
+@ApiBearerAuth('JWT-auth')
 @Controller('events')
 @UseGuards(JwtAuthGuard, TenantGuard)
 export class EventsController {
