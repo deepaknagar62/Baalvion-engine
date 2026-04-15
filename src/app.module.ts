@@ -14,6 +14,7 @@ import { RedisModule } from './infra/redis/redis.module';
 import { RealtimeModule } from './modules/realtime/realtime.module';
 import { EventsModule } from './modules/events/events.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     RealtimeModule,
     EventsModule,
     NotificationsModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

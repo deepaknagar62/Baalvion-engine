@@ -47,6 +47,7 @@ async function bootstrap() {
     .addTag('Tenants', 'Tenant management endpoints')
     .addTag('Users', 'User management endpoints')
     .addTag('Sessions', 'Session tracking endpoints')
+    .addTag('Dashboard', 'Dashboard analytics and metrics endpoints')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
