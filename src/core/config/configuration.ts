@@ -23,6 +23,10 @@ export default () => ({
     secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
     expiresIn: process.env.JWT_EXPIRES_IN || '24h',
   },
+  superAdmin: {
+    email: process.env.SUPER_ADMIN_EMAIL || 'superadmin@baalvion.com',
+    password: process.env.SUPER_ADMIN_PASSWORD || 'SuperAdmin@123',
+  },
   sendgrid: {
     apiKey: process.env.SENDGRID_API_KEY || '',
     fromEmail: process.env.SENDGRID_FROM_EMAIL || 'noreply@baalvion.com',

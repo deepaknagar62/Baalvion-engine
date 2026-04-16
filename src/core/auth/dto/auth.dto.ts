@@ -29,3 +29,19 @@ export class ValidateTokenDto {
   @IsNotEmpty()
   token: string;
 }
+
+export class LoginDto {
+  @ApiProperty({ example: 'user@example.com', description: 'User email address' })
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty({ example: 'password123', description: 'User password (for super admin only)' })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @ApiProperty({ example: 'tenant-001', description: 'Tenant ID (optional for super admin)', required: false })
+  @IsString()
+  tenantId?: string;
+}
