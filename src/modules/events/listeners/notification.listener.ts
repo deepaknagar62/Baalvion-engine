@@ -31,6 +31,28 @@ export class NotificationListener {
   async handleUserLogin(event: eventInterface.INexusEvent) {
     await runWithTenant(event.tenantId, async () => {
       this.logger.log(`User login event for tenant ${event.tenantId}`);
+
+      if (!event.payload.userId) return;
+
+      await this.queueService.addInAppJob(
+        {
+          recipient: event.payload.userId,
+          subject: 'Login Successful',
+          body: `Welcome back, ${event.payload.name || event.payload.email}! You have successfully logged in.`,
+          userId: event.payload.userId,
+        },
+        event.tenantId,
+      );
+
+      await this.queueService.addEmailJob(
+        {
+          recipient: event.payload.email,
+          subject: 'Login Successful',
+          body: `Hi ${event.payload.name || 'there'}, you have successfully logged in to your account.`,
+          userId: event.payload.userId,
+        },
+        event.tenantId,
+      );
     });
   }
 

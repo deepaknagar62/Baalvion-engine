@@ -1,18 +1,22 @@
-import { Injectable, UnauthorizedException, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Inject, forwardRef, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { IJwtPayload } from '../../common/interfaces/jwt-payload.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { UsersService } from '../../modules/users/users.service';
 import { runWithTenant } from '../tenant/tenant-context';
+import { EventBusService } from '../../modules/events/event-bus.service';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
+    private readonly eventBusService: EventBusService,
   ) {}
 
   async validateToken(token: string): Promise<IJwtPayload> {
@@ -105,6 +109,18 @@ export class AuthService {
     );
 
     const expiresIn = this.configService.get<string>('JWT_EXPIRES_IN', '24h');
+
+    // Emit user.login event — triggers notification + WebSocket broadcast automatically
+    await runWithTenant(user.tenantId, async () => {
+      await this.eventBusService.emit('user.login', {
+        userId: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      }, 'auth-service');
+    });
+
+    this.logger.log(`User ${user.email} logged in for tenant ${user.tenantId}`);
 
     return {
       token,

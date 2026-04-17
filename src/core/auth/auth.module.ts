@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UsersModule } from '../../modules/users/users.module';
+import { EventsModule } from '../../modules/events/events.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UsersModule } from '../../modules/users/users.module';
       },
     }),
     forwardRef(() => UsersModule),
+    EventsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

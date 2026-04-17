@@ -13,6 +13,8 @@ import { Logger, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { createAdapter } from '@socket.io/redis-adapter';
 import Redis from 'ioredis';
+import { OnEvent } from '@nestjs/event-emitter';
+import type { INexusEvent } from '../../common/interfaces/event.interface';
 
 @WebSocketGateway({
   cors: { origin: '*' },
@@ -136,6 +138,18 @@ export class RealtimeGateway implements OnGatewayConnection, OnGatewayDisconnect
 
   broadcastToAdmins(tenantId: string, event: string, data: any) {
     this.server.to(`tenant:${tenantId}:admin`).emit(event, data);
+  }
+
+  @OnEvent('notification.inapp')
+  handleInAppNotification(event: INexusEvent) {
+    const { tenantId, payload } = event;
+    this.broadcastToUser(tenantId, payload.userId, 'notification.new', {
+      notificationId: payload.notificationId,
+      subject: payload.subject,
+      body: payload.body,
+      timestamp: event.timestamp,
+    });
+    this.logger.log(`WebSocket notification sent to user ${payload.userId} in tenant ${tenantId}`);
   }
 
   async getConnectedClients(tenantId: string): Promise<number> {
